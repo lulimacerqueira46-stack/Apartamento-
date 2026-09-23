@@ -1,0 +1,7 @@
+{
+  "name": "Horizonte Prime - Venda de Apartamentos de Alto Padrão",
+  "description": "Descubra o Horizonte Prime Residences. Apartamentos exclusivos de 2 a 4 suítes com lazer de resort, acabamentos de altíssimo padrão e condições privilegiadas de lançamento.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

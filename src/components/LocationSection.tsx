@@ -119,8 +119,17 @@ export const LocationSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Simulated Radar / Map Visual */}
+            {/* Simulated Radar / Aerial Map Visual */}
             <div className="relative aspect-square w-full rounded-xl bg-[#090d14] border border-white/10 p-4 flex items-center justify-center overflow-hidden my-4">
+              {/* Aerial satellite photographic backdrop */}
+              <img
+                src="https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&w=800&q=80"
+                alt="Vista aérea do bairro nobre e parque adjacente"
+                className="absolute inset-0 w-full h-full object-cover opacity-25 filter grayscale contrast-125"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#090d14] via-[#090d14]/60 to-[#090d14]/70" />
+
               {/* Concentric distance rings */}
               <div className="absolute w-4/5 h-4/5 rounded-full border border-dashed border-amber-400/20" />
               <div className="absolute w-3/5 h-3/5 rounded-full border border-dashed border-amber-400/30" />
@@ -137,13 +146,13 @@ export const LocationSection: React.FC = () => {
               </div>
 
               {/* Surrounding points */}
-              <div className="absolute top-6 left-8 bg-white/10 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-200 border border-white/10">
+              <div className="absolute top-6 left-8 bg-black/70 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-200 border border-white/15 shadow">
                 Parque Central (2 min)
               </div>
-              <div className="absolute bottom-8 right-6 bg-white/10 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-200 border border-white/10">
+              <div className="absolute bottom-8 right-6 bg-black/70 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-200 border border-white/15 shadow">
                 Polo Gastronômico (4 min)
               </div>
-              <div className="absolute top-10 right-8 bg-white/10 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-200 border border-white/10">
+              <div className="absolute top-10 right-8 bg-black/70 backdrop-blur-md px-2 py-1 rounded text-[10px] text-slate-200 border border-white/15 shadow">
                 Shopping Iguatemi (6 min)
               </div>
             </div>

@@ -7,6 +7,7 @@ import React from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Highlights } from './components/Highlights';
+import { Gallery } from './components/Gallery';
 import { Floorplans } from './components/Floorplans';
 import { Amenities } from './components/Amenities';
 import { LocationSection } from './components/LocationSection';
@@ -24,6 +25,7 @@ export default function App() {
       <main className="flex-1">
         <Hero />
         <Highlights />
+        <Gallery />
         <Floorplans />
         <Amenities />
         <LocationSection />

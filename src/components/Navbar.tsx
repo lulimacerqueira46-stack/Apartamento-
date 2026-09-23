@@ -40,6 +40,12 @@ export const Navbar: React.FC = () => {
             O Empreendimento
           </a>
           <a
+            href="#galeria"
+            className="hover:text-white transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-amber-400 hover:after:w-full after:transition-all text-amber-300/90"
+          >
+            Galeria
+          </a>
+          <a
             href="#plantas"
             className="hover:text-white transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-amber-400 hover:after:w-full after:transition-all"
           >
@@ -62,12 +68,6 @@ export const Navbar: React.FC = () => {
             className="hover:text-white transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-amber-400 hover:after:w-full after:transition-all"
           >
             Simulador
-          </a>
-          <a
-            href="#faq"
-            className="hover:text-white transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-amber-400 hover:after:w-full after:transition-all"
-          >
-            Dúvidas
           </a>
         </nav>
 

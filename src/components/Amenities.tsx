@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AMENITIES, Amenity, FORM_URL } from '../data/apartments';
+import { SITE_IMAGES, handleImageError } from '../data/images';
 import {
   Waves,
   Utensils,
@@ -28,15 +29,29 @@ export const Amenities: React.FC = () => {
       ? AMENITIES
       : AMENITIES.filter((a) => a.category === activeTab);
 
-  const getAmenityIcon = (title: string) => {
-    if (title.includes('Pool') || title.includes('Piscina')) return <Waves className="w-5 h-5 text-amber-400" />;
-    if (title.includes('Gourmet')) return <Utensils className="w-5 h-5 text-amber-400" />;
-    if (title.includes('Fitness')) return <Dumbbell className="w-5 h-5 text-amber-400" />;
-    if (title.includes('Spa')) return <Sparkles className="w-5 h-5 text-amber-400" />;
-    if (title.includes('Coworking')) return <Briefcase className="w-5 h-5 text-amber-400" />;
-    if (title.includes('Market')) return <ShoppingBag className="w-5 h-5 text-amber-400" />;
-    if (title.includes('Portaria')) return <ShieldCheck className="w-5 h-5 text-amber-400" />;
-    return <Zap className="w-5 h-5 text-amber-400" />;
+  const getAmenityData = (title: string) => {
+    if (title.includes('Pool') || title.includes('Piscina')) {
+      return { icon: <Waves className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.pool };
+    }
+    if (title.includes('Gourmet')) {
+      return { icon: <Utensils className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.gourmet };
+    }
+    if (title.includes('Fitness')) {
+      return { icon: <Dumbbell className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.gym };
+    }
+    if (title.includes('Spa')) {
+      return { icon: <Sparkles className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.suite };
+    }
+    if (title.includes('Coworking')) {
+      return { icon: <Briefcase className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.coworking };
+    }
+    if (title.includes('Market')) {
+      return { icon: <ShoppingBag className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.gourmet };
+    }
+    if (title.includes('Portaria')) {
+      return { icon: <ShieldCheck className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.facadeDay };
+    }
+    return { icon: <Zap className="w-5 h-5 text-amber-400" />, img: SITE_IMAGES.lounge };
   };
 
   return (
@@ -77,34 +92,49 @@ export const Amenities: React.FC = () => {
 
         {/* Amenities Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {filteredAmenities.map((item, idx) => (
-            <div
-              key={idx}
-              className="bg-[#111927] border border-white/10 rounded-xl p-6 flex flex-col justify-between group hover:border-amber-400/40 hover:-translate-y-1 transition-all duration-300"
-            >
-              <div>
-                <div className="w-10 h-10 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  {getAmenityIcon(item.title)}
+          {filteredAmenities.map((item, idx) => {
+            const { icon, img } = getAmenityData(item.title);
+            return (
+              <div
+                key={idx}
+                className="bg-[#111927] border border-white/10 rounded-xl overflow-hidden flex flex-col justify-between group hover:border-amber-400/40 hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="aspect-[16/10] overflow-hidden bg-slate-900 relative">
+                  <img
+                    src={img.src}
+                    onError={(e) => handleImageError(e, img.fallback)}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111927] via-transparent to-transparent opacity-80" />
+                  <div className="absolute top-3 left-3 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-sm border border-white/15 flex items-center justify-center">
+                    {icon}
+                  </div>
                 </div>
 
-                <div className="text-xs text-slate-400 font-medium mb-1">
-                  {item.category}
+                <div className="p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="text-[11px] text-slate-400 font-medium mb-1">
+                      {item.category}
+                    </div>
+
+                    <h3 className="text-base font-semibold text-white font-serif-display mb-2">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 mt-4 border-t border-white/5 text-[11px] text-amber-300/80 font-medium">
+                    Entregue equipado e decorado
+                  </div>
                 </div>
-
-                <h3 className="text-lg font-semibold text-white font-serif-display mb-2">
-                  {item.title}
-                </h3>
-
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {item.description}
-                </p>
               </div>
-
-              <div className="pt-4 mt-4 border-t border-white/5 text-[11px] text-amber-300/80 font-medium">
-                Entregue 100% equipado e decorado
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Quick CTA Banner Inside Amenities */}
@@ -131,3 +161,4 @@ export const Amenities: React.FC = () => {
     </section>
   );
 };
+

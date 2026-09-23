@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TYPOLOGIES, FORM_URL, Typology } from '../data/apartments';
+import { SITE_IMAGES, handleImageError } from '../data/images';
 import {
   Maximize2,
   BedDouble,
@@ -8,14 +9,33 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Sparkles,
-  Layers
+  Layers,
+  Image as ImageIcon
 } from 'lucide-react';
 
 export const Floorplans: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>(TYPOLOGIES[1].id); // default to Conforto 88m²
+  const [viewMode, setViewMode] = useState<'photo' | 'blueprint'>('photo');
 
   const selectedTypology: Typology =
     TYPOLOGIES.find((t) => t.id === selectedId) || TYPOLOGIES[0];
+
+  const getTypologyImage = (id: string) => {
+    switch (id) {
+      case 'studio-prime':
+        return SITE_IMAGES.suite;
+      case 'planta-conforto':
+        return SITE_IMAGES.living;
+      case 'grand-family':
+        return SITE_IMAGES.lounge;
+      case 'penthouse-sky':
+        return SITE_IMAGES.pool;
+      default:
+        return SITE_IMAGES.living;
+    }
+  };
+
+  const currentImage = getTypologyImage(selectedTypology.id);
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -68,62 +88,108 @@ export const Floorplans: React.FC = () => {
         <div className="bg-[#111927] border border-white/10 rounded-2xl p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Architectural Schematic / Floorplan Representation (Span 6) */}
           <div className="lg:col-span-6 flex flex-col items-center justify-center">
-            <div className="w-full aspect-[4/3] bg-[#090d14] rounded-xl border border-white/10 p-6 relative flex flex-col justify-between overflow-hidden shadow-inner group">
-              {/* Subtle Grid Blueprint background */}
-              <div
-                className="absolute inset-0 opacity-15 pointer-events-none"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(circle at 1px 1px, rgba(251, 191, 36, 0.4) 1px, transparent 0)',
-                  backgroundSize: '24px 24px'
-                }}
-              />
+            {/* View Mode Toggle */}
+            <div className="flex items-center gap-2 mb-3 bg-[#090d14] p-1 rounded-lg border border-white/10 self-start">
+              <button
+                onClick={() => setViewMode('photo')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-colors cursor-pointer ${
+                  viewMode === 'photo'
+                    ? 'bg-amber-400 text-slate-950 font-semibold'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <ImageIcon className="w-3.5 h-3.5" />
+                Perspectiva Decorada
+              </button>
+              <button
+                onClick={() => setViewMode('blueprint')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-colors cursor-pointer ${
+                  viewMode === 'blueprint'
+                    ? 'bg-amber-400 text-slate-950 font-semibold'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                Planta Esquemática
+              </button>
+            </div>
 
-              {/* Top bar of the floorplan viewer */}
-              <div className="relative z-10 flex items-center justify-between text-xs text-slate-400 border-b border-white/10 pb-3">
-                <span className="font-mono uppercase tracking-wider text-amber-300/80 flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5" />
-                  Planta Arquitetônica Oficial
-                </span>
-                <span className="font-mono">{selectedTypology.area} m² privativos</span>
-              </div>
-
-              {/* Graphic Blueprint Layout Visual */}
-              <div className="relative z-10 my-4 flex-1 flex items-center justify-center">
-                <div className="w-full h-full max-h-56 border-2 border-dashed border-amber-400/30 rounded-lg p-3 flex flex-col justify-between bg-amber-400/[0.02]">
-                  {/* Living and Gourmet */}
-                  <div className="h-1/2 border border-white/15 rounded bg-white/[0.03] p-2 flex items-center justify-between mb-2">
-                    <div className="text-left">
-                      <span className="text-[11px] font-semibold text-white block">Living & Jantar</span>
-                      <span className="text-[10px] text-slate-400">Piso em porcelanato 120x120</span>
-                    </div>
-                    <div className="bg-amber-400/10 border border-amber-400/30 px-2 py-1 rounded text-right">
-                      <span className="text-[10px] text-amber-300 font-medium block">Varanda Gourmet</span>
-                      <span className="text-[9px] text-slate-400">Churrasqueira a carvão</span>
-                    </div>
-                  </div>
-
-                  {/* Private Suites */}
-                  <div className="h-1/2 grid grid-cols-2 gap-2">
-                    <div className="border border-white/15 rounded bg-white/[0.03] p-2">
-                      <span className="text-[11px] font-semibold text-white block">Suíte Master</span>
-                      <span className="text-[9px] text-slate-400">Closet + Banheiro privativo</span>
-                    </div>
-                    <div className="border border-white/15 rounded bg-white/[0.03] p-2">
-                      <span className="text-[11px] font-semibold text-white block">
-                        {selectedTypology.suites > 1 ? 'Suíte 2' : 'Cozinha Gourmet'}
-                      </span>
-                      <span className="text-[9px] text-slate-400">Ponto para lava-louças e coifa</span>
-                    </div>
+            <div className="w-full aspect-[4/3] bg-[#090d14] rounded-xl border border-white/10 overflow-hidden shadow-inner group relative">
+              {viewMode === 'photo' ? (
+                <div className="relative w-full h-full">
+                  <img
+                    src={currentImage.src}
+                    onError={(e) => handleImageError(e, currentImage.fallback)}
+                    alt={`${selectedTypology.name} perspectiva decorada`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#090d14] via-transparent to-transparent opacity-70" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-slate-200 bg-black/60 backdrop-blur-sm px-3 py-2 rounded-lg border border-white/10">
+                    <span className="font-medium text-amber-300">
+                      Decorado Oficial · {selectedTypology.area} m²
+                    </span>
+                    <span className="text-slate-400">Acabamento personalizável</span>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="p-6 h-full flex flex-col justify-between">
+                  {/* Subtle Grid Blueprint background */}
+                  <div
+                    className="absolute inset-0 opacity-15 pointer-events-none"
+                    style={{
+                      backgroundImage:
+                        'radial-gradient(circle at 1px 1px, rgba(251, 191, 36, 0.4) 1px, transparent 0)',
+                      backgroundSize: '24px 24px'
+                    }}
+                  />
 
-              {/* Bottom floorplan notes */}
-              <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-white/10">
-                <span>{selectedTypology.floorplanType}</span>
-                <span className="text-amber-400 font-medium">Acesso com Biometria</span>
-              </div>
+                  {/* Top bar of the floorplan viewer */}
+                  <div className="relative z-10 flex items-center justify-between text-xs text-slate-400 border-b border-white/10 pb-3">
+                    <span className="font-mono uppercase tracking-wider text-amber-300/80 flex items-center gap-1.5">
+                      <Layers className="w-3.5 h-3.5" />
+                      Planta Arquitetônica Oficial
+                    </span>
+                    <span className="font-mono">{selectedTypology.area} m² privativos</span>
+                  </div>
+
+                  {/* Graphic Blueprint Layout Visual */}
+                  <div className="relative z-10 my-4 flex-1 flex items-center justify-center">
+                    <div className="w-full h-full max-h-56 border-2 border-dashed border-amber-400/30 rounded-lg p-3 flex flex-col justify-between bg-amber-400/[0.02]">
+                      {/* Living and Gourmet */}
+                      <div className="h-1/2 border border-white/15 rounded bg-white/[0.03] p-2 flex items-center justify-between mb-2">
+                        <div className="text-left">
+                          <span className="text-[11px] font-semibold text-white block">Living & Jantar</span>
+                          <span className="text-[10px] text-slate-400">Piso em porcelanato 120x120</span>
+                        </div>
+                        <div className="bg-amber-400/10 border border-amber-400/30 px-2 py-1 rounded text-right">
+                          <span className="text-[10px] text-amber-300 font-medium block">Varanda Gourmet</span>
+                          <span className="text-[9px] text-slate-400">Churrasqueira a carvão</span>
+                        </div>
+                      </div>
+
+                      {/* Private Suites */}
+                      <div className="h-1/2 grid grid-cols-2 gap-2">
+                        <div className="border border-white/15 rounded bg-white/[0.03] p-2">
+                          <span className="text-[11px] font-semibold text-white block">Suíte Master</span>
+                          <span className="text-[9px] text-slate-400">Closet + Banheiro privativo</span>
+                        </div>
+                        <div className="border border-white/15 rounded bg-white/[0.03] p-2">
+                          <span className="text-[11px] font-semibold text-white block">
+                            {selectedTypology.suites > 1 ? 'Suíte 2' : 'Cozinha Gourmet'}
+                          </span>
+                          <span className="text-[9px] text-slate-400">Ponto para lava-louças e coifa</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom floorplan notes */}
+                  <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-white/10">
+                    <span>{selectedTypology.floorplanType}</span>
+                    <span className="text-amber-400 font-medium">Acesso com Biometria</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <p className="text-xs text-slate-400 mt-3 text-center">
@@ -233,3 +299,4 @@ export const Floorplans: React.FC = () => {
     </section>
   );
 };
+

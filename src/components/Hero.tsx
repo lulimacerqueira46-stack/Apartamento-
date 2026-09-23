@@ -1,18 +1,19 @@
 import React from 'react';
 import { FORM_URL } from '../data/apartments';
-import heroImg from '../assets/images/hero_luxury_apartment_1790202353822.jpg';
+import { SITE_IMAGES, handleImageError } from '../data/images';
 import { ArrowUpRight, ChevronDown, Sparkles, Shield, Compass } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-20 overflow-hidden">
-      {/* Background Photography with Sophisticated Cinematic Overlay Scrim */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-20 overflow-hidden bg-[#0b0f17]">
+      {/* Background Photography with High-Reliability Fallback */}
+      <div className="absolute inset-0 z-0 bg-[#090d14]">
         <img
-          src={heroImg}
-          alt="Fachada arquitetônica contemporânea do Horizonte Prime Residences ao entardecer"
-          className="w-full h-full object-cover object-center scale-105 transform motion-safe:animate-pulse [animation-duration:8s]"
-          referrerPolicy="no-referrer"
+          src={SITE_IMAGES.hero.src}
+          onError={(e) => handleImageError(e, SITE_IMAGES.hero.fallback)}
+          alt={SITE_IMAGES.hero.alt}
+          className="w-full h-full object-cover object-center scale-105 transform motion-safe:animate-pulse [animation-duration:8s] transition-opacity duration-700"
+          loading="eager"
         />
         {/* Multi-layer gradient scrim to ensure 4.5:1 WCAG AA contrast */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-[#0b0f17]/70 to-[#0b0f17]/40" />

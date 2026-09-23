@@ -1,7 +1,5 @@
 import React from 'react';
-import livingImg from '../assets/images/interior_living_room_1790202364271.jpg';
-import poolImg from '../assets/images/rooftop_infinity_pool_1790202376728.jpg';
-import suiteImg from '../assets/images/master_suite_bedroom_1790202386437.jpg';
+import { SITE_IMAGES, handleImageError } from '../data/images';
 import { FORM_URL } from '../data/apartments';
 import { ArrowUpRight, Check } from 'lucide-react';
 
@@ -29,10 +27,11 @@ export const Highlights: React.FC = () => {
           <div className="lg:col-span-7 bg-[#111927] border border-white/10 rounded-2xl overflow-hidden flex flex-col group hover:border-amber-400/40 transition-colors">
             <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
               <img
-                src={livingImg}
-                alt="Living room integrado com varanda gourmet panorâmica"
+                src={SITE_IMAGES.living.src}
+                onError={(e) => handleImageError(e, SITE_IMAGES.living.fallback)}
+                alt={SITE_IMAGES.living.alt}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                referrerPolicy="no-referrer"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#111927] via-transparent to-transparent opacity-80" />
             </div>
@@ -76,10 +75,11 @@ export const Highlights: React.FC = () => {
             <div className="bg-[#111927] border border-white/10 rounded-2xl overflow-hidden flex flex-col group hover:border-amber-400/40 transition-colors">
               <div className="relative aspect-[16/9] overflow-hidden bg-slate-900">
                 <img
-                  src={poolImg}
-                  alt="Piscina de borda infinita no rooftop com vista panorâmica"
+                  src={SITE_IMAGES.pool.src}
+                  onError={(e) => handleImageError(e, SITE_IMAGES.pool.fallback)}
+                  alt={SITE_IMAGES.pool.alt}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111927] via-transparent to-transparent opacity-80" />
               </div>
@@ -100,10 +100,11 @@ export const Highlights: React.FC = () => {
             <div className="bg-[#111927] border border-white/10 rounded-2xl overflow-hidden flex flex-col group hover:border-amber-400/40 transition-colors">
               <div className="relative aspect-[16/9] overflow-hidden bg-slate-900">
                 <img
-                  src={suiteImg}
-                  alt="Suíte master com closet e vista panorâmica"
+                  src={SITE_IMAGES.suite.src}
+                  onError={(e) => handleImageError(e, SITE_IMAGES.suite.fallback)}
+                  alt={SITE_IMAGES.suite.alt}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111927] via-transparent to-transparent opacity-80" />
               </div>
